@@ -1,0 +1,70 @@
+services:
+  erigon:
+    image: erigontech/erigon:main-latest
+    container_name: erigon
+    restart: unless-stopped
+    ports:
+      - "30303:30303" # P2P TCP
+      - "30303:30303/udp" # P2P UDP
+      - "8545:8545" # HTTP RPC
+      - "8551:8551" # Engine API (JWT authenticated)
+      - "6060:6060" # Metrics
+    volumes:
+      - ./erigon-data:/home/erigon/.local/share/erigon
+      - ./jwt.hex:/jwt.hex:ro
+    command: >
+      --datadir=/home/erigon/.local/share/erigon
+      --chain=mainnet
+      --externalcl
+      --http
+      --http.addr=0.0.0.0
+      --http.port=8545
+      --http.api=eth,debug,net,trace,web3,erigon,txpool
+      --http.vhosts=*
+      --http.corsdomain=*
+      --ws
+      --authrpc.addr=0.0.0.0
+      --authrpc.port=8551
+      --authrpc.vhosts=*
+      --authrpc.jwtsecret=/jwt.hex
+      --metrics
+      --metrics.addr=0.0.0.0
+      --metrics.port=6060
+      --prune.mode=archive
+    networks:
+      - ethereum
+
+  lighthouse:
+    image: sigp/lighthouse:latest
+    container_name: lighthouse
+    restart: unless-stopped
+    ports:
+      - "9000:9000/tcp" # P2P TCP
+      - "9000:9000/udp" # P2P UDP
+      - "5052:5052" # HTTP API
+      - "5054:5054" # Metrics
+    volumes:
+      - ./lighthouse-data:/home/user/data
+      - ./jwt.hex:/jwt.hex:ro
+    command: >
+      lighthouse bn
+      --datadir=/home/user/data
+      --network=mainnet
+      --execution-endpoint=http://erigon:8551
+      --execution-jwt=/jwt.hex
+      --checkpoint-sync-url=https://mainnet.checkpoint.sigp.io
+      --http
+      --http-address=0.0.0.0
+      --http-port=5052
+      --metrics
+      --metrics-address=0.0.0.0
+      --metrics-port=5054
+      --reconstruct-historic-states
+    depends_on:
+      - erigon
+    networks:
+      - ethereum
+
+networks:
+  ethereum:
+    driver: bridge

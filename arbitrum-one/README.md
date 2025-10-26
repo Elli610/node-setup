@@ -8,7 +8,7 @@ docker run -d -it --restart=unless-stopped --name arb1-node \
   -p 0.0.0.0:8547:8547 \
   -p 0.0.0.0:8548:8548 \
   -p 0.0.0.0:6070:6070 \
-  offchainlabs/nitro-node:v3.6.4-rc.1-28199cd \
+  offchainlabs/nitro-node:ARB1_LATEST_IMAGE \
   --parent-chain.connection.url=EL_CLIENT_RPC_URL \
   --chain.id=42161 \
   --http.api=net,web3,eth \
@@ -32,7 +32,7 @@ docker run -d -it --restart=unless-stopped --name arb1-node \
   -p 0.0.0.0:8547:8547 \
   -p 0.0.0.0:8548:8548 \
   -p 0.0.0.0:6070:6070 \
-  offchainlabs/nitro-node:v3.6.4-rc.1-28199cd \
+  offchainlabs/nitro-node:ARB1_LATEST_IMAGE \
   --parent-chain.connection.url=EL_CLIENT_RPC_URL \
   --chain.id=42161 \
   --http.api=net,web3,eth \

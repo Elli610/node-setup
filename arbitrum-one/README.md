@@ -2,7 +2,7 @@
 Get last release here: [https://hub.docker.com/r/offchainlabs/nitro-node/tags](https://hub.docker.com/r/offchainlabs/nitro-node/tags)
 ```bash
 docker run -d -it --restart=unless-stopped --name arb1-node \
-  -v /home/laviedeskiwis66/.arbitrum:/home/user/.arbitrum \
+  -v /home/$USER/.arbitrum:/home/user/.arbitrum \
   -p 0.0.0.0:8547:8547 \
   -p 0.0.0.0:8548:8548 \
   -p 0.0.0.0:6070:6070 \
